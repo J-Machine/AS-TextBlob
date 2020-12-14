@@ -3,6 +3,7 @@
 from textblob import TextBlob
 # import os  # para poder leer archivos del sistema
 import time
+
 """ 
     Leyendo archivo desde un archivo txt 
 """
@@ -49,4 +50,4 @@ def get_analysis(text):
 
 #### TEST- análisis del lenguaje ###
 test_04 = get_analysis(text_song)
-print("type of text song:", type(text_song), test_04, "\n")
+print("type of text song:", type(text_song), "\n", test_04, "\n")
