@@ -5,8 +5,9 @@ import PySimpleGUI as sg
 import os.path
 
 #Temas
-list_themes = ['LightBrown9','BrightColors','LightBrown5','LightBlue5' ]
-sg.theme(list_themes[0])
+list_themes = ['LightBrown9','BrightColors','LightBrown5','LightBlue5', 'Material1', 'SystemDefault' ]
+sg.theme(list_themes[-2])
+
 #Variables
 labels = ["Etiqueta1", "Etiqueta2", "Etiqueta3"]
 
@@ -14,13 +15,13 @@ labels = ["Etiqueta1", "Etiqueta2", "Etiqueta3"]
 input_column = [
     [sg.Text('¡BIENVENIDO(A)!')],
     [sg.Text('Nuestra herramienta de análisis de sentimientos le permitirá tener una medida de polaridad y subjetividad de su texto.    ')],
-    [sg.Text('A continuación coloque el texto que desea analizar. Se permite un máximo de 300 caracteres. El texto puede estar en español o en inglés.')],
-    [sg.Multiline(size=(30, 5), key='textbox')],  # identify the multiline via key option
+    [sg.Text('A continuación coloque el texto que desea analizar. Se permite un máximo de 140 caracteres. El texto puede estar en español o en inglés.')],
+    [sg.Multiline(size=(100, 20), key='-MLINE-')],  # identify the multiline via key option
     [sg.Button('Analizar')],
 ]
 result_column = [
-    [sg.Text('Etiquetas:' + labels[0])],
-    [sg.Text('Nube de etiquetas' + labels[1])],
+    [sg.Text('Etiquetas:' + labels[0], key='-T_TAG-')],
+    [sg.Text('Nube de etiquetas' + labels[1], key='-I_CLOUD-')],
     [sg.Text('Gráfico:' + labels[2])],
 ]
 #Dibujo del Layout por filas
@@ -30,14 +31,14 @@ layout = [
 ]
 
 # Crea la ventana
-window = sg.Window('Análisis de sentimientos', layout).Finalize()
-window.Maximize()
+window = sg.Window('Analizador de sentimientos', layout ).Finalize()
+print(sg.Window.get_screen_size())
 
 # Como interfaz gráfica, debe ejecutarse dentro de un bucle y esperar que el usuario haga algo
 # Este es un ciclo/bucle que procesa "eventos" y obtiene los valores del imput
 while True:
     event, values = window.read()
-    if event in (None, 'Close Window'): # if user closes window or clicks cancel
+    if event == sg.WIN_CLOSED:
         break
     print('You entered in the textbox:')
     print(values['textbox'])  # get the content of multiline via its unique key
