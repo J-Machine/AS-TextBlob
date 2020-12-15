@@ -13,6 +13,7 @@
 - 
 ## Para activar el nuevo ambiente virtual, corre lo siguiente:
     [server]$ source venv/bin/activate
+
 ## Desactivar tu virtualenv
 Cuando finalices tu trabajo en tu ambiente virtual, puedes desactivarlo corriendo lo siguiente:
 
@@ -22,7 +23,15 @@ Cuando finalices tu trabajo en tu ambiente virtual, puedes desactivarlo corriend
   
 ## Creación de los requirements.txt 
 
-    pip freeze --local > requirements.txt
+    pip3 freeze --local > requirements.txt
 
 El parámetro --local solo generará una lista de paquetes y versiones que se instalan localmente en un virtualenv. Los paquetes globales no serán listados.
 
+## Install requirements.txt 
+cd to the directory where requirements.txt is located.
+activate your virtualenv.
+    run: pip3 install -r requirements.txt in your shell.
+
+## Install packages
+Si estas trabajando con python3, usa pip3, 
+si usas pip estará trabajando con la versión 2.7 de python

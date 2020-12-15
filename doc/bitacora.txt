@@ -1,0 +1,15 @@
+Creando un entorno virtual con python3
+virtuaenv python3pah name_env
+
+========Instalando Nuevamente las librerias========
+** Usando solo pip3
+- Textblob: 
+    pip3 install -U textblob
+    python3 -m textblob.download_corpora
+- PySimpleGUI:
+    pip3 install PySimpleGUI
+- Worcloud
+    pip3 install matplotlib
+    [El error que obtuve de que no encontraba el modulo matplotlib al parecer era porque el archivo se llamaba
+    matplotlib.py. Quizas no era necesario reiniciar todo...]
+    pip3 install wordcloud
