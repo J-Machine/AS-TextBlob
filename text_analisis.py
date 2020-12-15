@@ -18,6 +18,23 @@ content_twt = file_twt.read()
 # definiendo con que texto trabajar
 testing_text = content_twt # Alias 
 
+""" 
+    Probando TEXTBLOB
+"""
+# Creando un objeto textBlob (instanciando)
+testing_tb = TextBlob(content_song)
+
+# Extrayenfo tags
+tb_tags = testing_tb.tags
+print("TAGS :", tb_tags, "\n")
+
+# Extrayendo Noun phrases / frases nominales
+tb_phrases = testing_tb.noun_phrases
+print("FRASES NOMINALES :", tb_phrases, "\n")
+
+# Extrayendo oraciones. Reconoce oraciones por el punto. No es necesario que esté en inglés
+tb_sentences = testing_tb.sentences
+print("ORACIONES :", tb_sentences, "\n")
 
 """ 
     Creando la función principal que analisará el texto 
