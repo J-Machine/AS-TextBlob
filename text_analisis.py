@@ -7,15 +7,17 @@ import time
 """ 
     Leyendo archivo desde un archivo txt 
 """
-file_text = open('data/song_murallaverde.txt', 'r')
-content_file = file_text.read()
-print(content_file + "\n")
+# canción
+file_song = open('data/song_murallaverde.txt', 'r') # Spanish
+content_song = file_song.read()
 
-# TextBlob
-# text = str(content_file)
-text_song = content_file
-analysis = TextBlob(text_song)
-print(analysis)
+#comentario en twitter
+file_twt = open('data/twitter_comment_en.txt', 'r') # English
+content_twt = file_twt.read()
+
+# definiendo con que texto trabajar
+testing_text = content_twt # Alias 
+
 
 """ 
     Creando la función principal que analisará el texto 
@@ -37,7 +39,7 @@ def standardize_lang(a_text):
     
 
 #### TEST- estandarizacion del lenguaje ###
-test_02 = standardize_lang("Como ramen todos los dias")
+test_02 = standardize_lang(testing_text)
 print(test_02, "\n")
 
 
@@ -49,5 +51,5 @@ def get_analysis(text):
     return (polarity, subjetivity)
 
 #### TEST- análisis del lenguaje ###
-test_04 = get_analysis(text_song)
-print("type of text song:", type(text_song), "\n", test_04, "\n")
+test_04 = get_analysis(testing_text)
+print("type of text song:", type(testing_text), "\n", test_04, "\n")
