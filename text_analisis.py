@@ -1,72 +1,73 @@
-""" Análisis de Textos con TextBlob """
+""" 
+                =====================================
+                    Modulo para ANALISIS DE TEXTOS
+                =====================================
+                Uso de TextBlob y otras funciones 
+                para limpiar y usar el texto
+"""
 
 from textblob import TextBlob
-# import os  # para poder leer archivos del sistema
+import os 
 import time
 
-""" 
-    Leyendo archivo desde un archivo txt 
-"""
-# canción
-file_song = open('data/song_murallaverde.txt', 'r') # Spanish
-content_song = file_song.read()
-
-#comentario en twitter
-file_twt = open('data/twitter_comment_en.txt', 'r') # English
-content_twt = file_twt.read()
-
-# definiendo con que texto trabajar
-testing_text = content_twt # Alias 
 
 """ 
-    Probando TEXTBLOB
+    FUNCIONES 
 """
-# Creando un objeto textBlob (instanciando)
-testing_tb = TextBlob(content_song)
+## #LIMPIEZA DEl TEXTO ##
+def ignore_words():
+    """ Crea una lista con las palabras a ignorar a partir de un archivo"""
+    
+    # Leyendo archivo
+    f = open('data/irrelevante.txt', "r")
+    content_file = f.read()
+    f.close()
+    file_words = content_file.split(", ")
+    print("hay {0} palabras".format(len(file_words)), file_words)
 
-# Extrayenfo tags
-tb_tags = testing_tb.tags
-print("TAGS :", tb_tags, "\n")
+    file_words.sort()
 
-# Extrayendo Noun phrases / frases nominales
-tb_phrases = testing_tb.noun_phrases
-print("FRASES NOMINALES :", tb_phrases, "\n")
+    # Creando el archivo con las palabras a ignorar
+    g = open("data/excluir.txt", 'w')
+    for w in file_words:
+        g.write(w)
+    g.close()
 
-# Extrayendo oraciones. Reconoce oraciones por el punto. No es necesario que esté en inglés
-tb_sentences = testing_tb.sentences
-print("ORACIONES :", tb_sentences, "\n")
+## LIMPIAR EL TEXTO ##
+def clean_text_to_words(text):
+    """ return a list of words with all punctuation removed,
+        and all in lowercase.
+    """
+    my_substitutions = text.maketrans(
+      # Remplazar el texto por minusculas y remover puntuación
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&()*+,-./:;<=>?@[]^_`{|}~'\\",
+      "abcdefghijklmnopqrstuvwxyz                                          ")
 
-""" 
-    Creando la función principal que analisará el texto 
-"""
+    # Traduciendo el texto
+    cleaned_text = text.translate(my_substitutions)
+    words = cleaned_text.split()
+    return words
 
-def standardize_lang(a_text):
+## ESTANDARIZAR EL LENGUAJE DE ANÁLISIS ##
+def standardize_lang(text):
     """ Detecta el idioma inicial del texto(str) para devolver su traducción (str)al inglés de ser necesario .
     """
-    t = TextBlob(a_text)
+    t = TextBlob(text)
     if t.detect_language() == 'en':
         return str(t)
     
     # Si el idioma inicial no es el ingles, entonces devolver el texto traducido
     native = t.detect_language()
-    t_translated = str(t.translate(from_lang = native, to = 'en'))  #c ambia de un objeto textBlob a str
+    t_translated = str(t.translate(from_lang = native, to = 'en'))  #cambia de un objeto textBlob a str
     return t_translated
 
-    # El texto esta en inglés y no fue necesario traducirlo
-    
 
-#### TEST- estandarizacion del lenguaje ###
-test_02 = standardize_lang(testing_text)
-print(test_02, "\n")
-
-
+## FUNCIÓN ANALISIS DE SENTIMIENTOS##
 def get_analysis(text):
-    """ Estandariza y analiza el texto y devuelve la polaridad y subjetividad en una tupla """
+    """ Estandariza y analiza el texto y devuelve la polaridad y subjetividad en una tupla
+        (polarity, subjetivity)
+    """
     t = standardize_lang(text)
     polarity = TextBlob(t).sentiment.polarity
     subjetivity = TextBlob(t).sentiment.subjectivity
     return (polarity, subjetivity)
-
-#### TEST- análisis del lenguaje ###
-test_04 = get_analysis(testing_text)
-print("type of text song:", type(testing_text), "\n", test_04, "\n")
