@@ -3,7 +3,7 @@ Creando una interfaz gráfica que reciba la información del usuario
 """
 import PySimpleGUI as sg
 import os.path
-
+from cloud_words import my_wordcloud
 #Temas
 list_themes = ['LightBrown9','BrightColors','LightBrown5','LightBlue5', 'Material1', 'SystemDefault' ]
 sg.theme(list_themes[-2])
@@ -15,15 +15,21 @@ labels = ["Etiqueta1", "Etiqueta2", "Etiqueta3"]
 input_column = [
     [sg.Text('¡BIENVENIDO(A)!')],
     [sg.Text('Nuestra herramienta de análisis de sentimientos le permitirá tener una medida de polaridad y subjetividad de su texto.    ')],
-    [sg.Text('A continuación coloque el texto que desea analizar. Se permite un máximo de 140 caracteres. El texto puede estar en español o en inglés.')],
+    [sg.Text('A continuación coloque el texto que desea analizar. Se permite un máximo de 140 caracteres.')],
+    [sg.Text('El texto puede estar en español o en inglés.')],
     [sg.Multiline(size=(100, 20), key='-MLINE-')],  # identify the multiline via key option
-    [sg.Button('Analizar')],
+    [sg.Button('Analizar', key='-SUBMIT-')],
 ]
 result_column = [
-    [sg.Text('Etiquetas:' + labels[0], key='-T_TAG-')],
-    [sg.Text('Nube de etiquetas' + labels[1], key='-I_CLOUD-')],
+    # [sg.Text('Etiquetas:' + labels[0], key='-TAG-')],
+    [sg.Text('Etiquetas:' )],
+    [sg.Text(labels[0], key='-TAG-', size=(100, 2))],
+    [sg.Text('Nube de etiquetas: ' + labels[1])],
+    [sg.Image(key='-IMAGE-')],
     [sg.Text('Gráfico:' + labels[2])],
 ]
+
+""" Clase para construir la interfaz """
 #Dibujo del Layout por filas
 layout = [
     [sg.Column(input_column)],
@@ -31,20 +37,53 @@ layout = [
 ]
 
 # Crea la ventana
-window = sg.Window('Analizador de sentimientos', layout ).Finalize()
+window = sg.Window('Analizador simple de sentimientos', layout ).Finalize()
 print(sg.Window.get_screen_size())
+print(layout)
+
+
+
+### Probando clase function
+test_text = '''As a footnote, you should use lowercase for method names, and Capital words for classes as you're doing now. It's a good convention. I greatly recommend it.
+You should simply construct the object once in display.py and call all the methods.'''
+
+
+
+
+
 
 # Como interfaz gráfica, debe ejecutarse dentro de un bucle y esperar que el usuario haga algo
 # Este es un ciclo/bucle que procesa "eventos" y obtiene los valores del imput
 while True:
     event, values = window.read()
+    print(event, values)
+
     if event == sg.WIN_CLOSED:
         break
+    if event == '-SUBMIT-':
+        cw_test = my_wordcloud(test_text, 3)
+        cw_test.generate_img()
+        window['-IMAGE-'].update(filename="media/output.png")
+
     print('You entered in the textbox:')
-    print(values['textbox'])  # get the content of multiline via its unique key
+    print(values['-MLINE-'])  # get the content of multiline via its unique key
+    window['-TAG-'].update(values['-MLINE-'])
 
 window.close()
 
+
+
+
+
+
+
+
+
+
+""" sg.Popup('Title',
+         'The results of the window.',
+         'The button clicked was "{}"'.format(event),
+         'The values are', values) """
 
 """
     Demonstrates the new change_submits parameter for inputtext elements
